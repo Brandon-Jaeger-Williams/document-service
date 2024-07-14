@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.constraints.Size;
+import java.io.Serial;
 import java.util.Collection;
 import java.util.List;
 
@@ -16,6 +17,9 @@ import java.util.List;
 @Table(name = "users")
 @EqualsAndHashCode(callSuper = true)
 public class UserEntity extends AuditEntity implements UserDetails {
+
+    @Serial
+    private static final long serialVersionUID = -6693677937108209340L;
 
     @Column(name = "username")
     @Size(max = 50, message = "The maximum length of username is 50")
