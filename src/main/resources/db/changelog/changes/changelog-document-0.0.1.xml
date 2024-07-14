@@ -32,4 +32,42 @@
             <dropTable tableName="documents"/>
         </rollback>
     </changeSet>
+
+    <changeSet author="BW" id="document-0.0.2" runOnChange="true">
+        <createTable tableName="audits">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="created_at" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="from_file_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="from_file_type" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="to_file_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="to_file_type" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_destination" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="initiated_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="timestamp" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="audits"/>
+        </rollback>
+    </changeSet>
 </databaseChangeLog>
