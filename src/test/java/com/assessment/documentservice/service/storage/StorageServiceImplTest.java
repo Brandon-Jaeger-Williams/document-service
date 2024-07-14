@@ -35,7 +35,7 @@ class StorageServiceImplTest {
                 "Hello, World!".getBytes()
         );
 
-        when(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class))).thenReturn(null);
+        when(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class))).thenReturn(any());
 
         String key = storageService.uploadDocument(file);
 
