@@ -1,5 +1,8 @@
 package com.assessment.documentservice.service;
 
+import com.assessment.documentservice.entity.DocumentEntity;
+import com.assessment.documentservice.entity.UserEntity;
+import com.assessment.documentservice.producer.DocumentProducer;
 import com.assessment.documentservice.repository.DocumentRepository;
 import com.assessment.documentservice.service.storage.StorageService;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,10 +12,11 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class DocumentServiceImplTest {
 
@@ -22,9 +26,11 @@ class DocumentServiceImplTest {
 
     private final StorageService storageService = Mockito.mock(StorageService.class);
 
+    private final DocumentProducer documentProducer = Mockito.mock(DocumentProducer.class);
+
     @BeforeEach
     public void setUp() {
-        documentService = new DocumentServiceImpl(documentRepository, storageService);
+        documentService = new DocumentServiceImpl(documentRepository, storageService, documentProducer);
     }
 
     @Test
@@ -42,6 +48,29 @@ class DocumentServiceImplTest {
         String key = documentService.upload(file);
 
         assertEquals("testKey", key);
+    }
+
+    @Test
+    void test_process_with_pending_documents_should_send_to_document_process_queue() throws IOException {
+        DocumentEntity documentEntity1 = new DocumentEntity();
+        documentEntity1.setFileName("test1");
+        documentEntity1.setKey("test1");
+        documentEntity1.setFileType("csv");
+
+        DocumentEntity documentEntity2 = new DocumentEntity();
+        documentEntity2.setFileName("test2");
+        documentEntity2.setKey("test2");
+        documentEntity2.setFileType("csv");
+
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername("Test123");
+
+        when(documentRepository.findByProcessedFalse()).thenReturn(List.of(documentEntity1, documentEntity2));
+        doNothing().when(documentProducer).process(any());
+
+        documentService.process(userEntity);
+
+        verify(documentProducer, times(2)).process(any());
     }
 
 }
