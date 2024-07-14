@@ -21,6 +21,8 @@ public class DocumentServiceImpl implements DocumentService {
 
     private final StorageService storageService;
 
+    private final DocumentProducer documentProducer;
+
     @Timer
     @Override
     public String upload(MultipartFile file) throws IOException {
@@ -28,5 +30,12 @@ public class DocumentServiceImpl implements DocumentService {
         DocumentEntity documentEntity = DocumentMapper.mapFrom(key, file);
         documentRepository.save(documentEntity);
         return key;
+    }
+
+    @Override
+    public void process(UserDetails userDetails) {
+        documentRepository.findByProcessedFalse().forEach(document -> {
+            documentProducer.process(DocumentMapper.mapFrom(userDetails, document));
+        });
     }
 }
