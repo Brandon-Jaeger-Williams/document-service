@@ -2,18 +2,19 @@ package com.assessment.documentservice.mapper;
 
 import com.assessment.documentservice.entity.AuditEventEntity;
 import com.assessment.documentservice.model.AuditEvent;
+import com.assessment.documentservice.model.DocumentModel;
 import com.assessment.documentservice.model.DocumentProcessEvent;
 
 public class AuditEventMapper {
 
-    public static AuditEvent mapFrom(DocumentProcessEvent processEvent) {
+    public static AuditEvent mapFrom(DocumentProcessEvent processEvent, DocumentModel documentModel) {
         AuditEvent auditEvent = new AuditEvent();
         auditEvent.setInitiatedBy(processEvent.getInitiatedBy());
         auditEvent.setTimestamp(processEvent.getInitiatedDate());
         auditEvent.setFromFileName(processEvent.getDocumentName());
         auditEvent.setFromFileType(processEvent.getDocumentType());
-        auditEvent.setToFileName(processEvent.getDocumentName());
-        auditEvent.setToFileType(processEvent.getDocumentType());
+        auditEvent.setToFileName(documentModel.getFileName());
+        auditEvent.setToFileType(documentModel.getFileType());
         auditEvent.setFileDestination("test");
         return auditEvent;
     }
