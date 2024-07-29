@@ -31,7 +31,7 @@ class StorageServiceImplTest {
                 "Hello, World!".getBytes()
         );
 
-        String key = storageService.uploadDocument(file.getBytes());
+        String key = storageService.uploadDocument(file.getBytes(), "processed");
         assertNotNull(key);
     }
 }

@@ -15,7 +15,7 @@ public class AuditEventMapper {
         auditEvent.setFromFileType(processEvent.getDocumentType());
         auditEvent.setToFileName(documentModel.getFileName());
         auditEvent.setToFileType(documentModel.getFileType());
-        auditEvent.setFileDestination("test");
+        auditEvent.setFileDestination(documentModel.getKey());
         return auditEvent;
     }
 

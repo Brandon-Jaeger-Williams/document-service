@@ -29,7 +29,7 @@ public class ProcessedDocumentServiceImpl implements ProcessedDocumentService {
 
     @Override
     public DocumentModel storeDocument(ProcessedDocument processedDocument) {
-        String key = storageService.uploadDocument(processedDocument.getStream().toByteArray());
+        String key = storageService.uploadDocument(processedDocument.getStream().toByteArray(), "processed");
         ProcessedDocumentEntity documentEntity = DocumentMapper.mapFrom(processedDocument, key);
         return DocumentMapper.mapFrom(repository.save(documentEntity));
     }

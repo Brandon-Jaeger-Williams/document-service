@@ -5,7 +5,7 @@ import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 
 public interface StorageService {
 
-    String uploadDocument(byte[] bytes);
+    String uploadDocument(byte[] bytes, String path);
 
     ResponseInputStream<GetObjectResponse> getDocument(String key);
 }

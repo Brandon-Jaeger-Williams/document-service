@@ -24,8 +24,8 @@ public class StorageServiceImpl implements StorageService {
     private final S3Client s3Client;
 
     @Override
-    public String uploadDocument(byte[] bytes) {
-        String key = UUID.randomUUID().toString();
+    public String uploadDocument(byte[] bytes, String path) {
+        String key = String.format("%s/%s", path, UUID.randomUUID());
         InputStream inputStream = new ByteArrayInputStream(bytes);
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(bucket)
