@@ -18,9 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class DocumentServiceImplTest {
+class UnProcessedDocumentServiceImplTest {
 
-    private DocumentService documentService;
+    private UnProcessedDocumentService documentService;
 
     private final DocumentRepository documentRepository = Mockito.mock(DocumentRepository.class);
 
@@ -30,7 +30,7 @@ class DocumentServiceImplTest {
 
     @BeforeEach
     public void setUp() {
-        documentService = new DocumentServiceImpl(documentRepository, storageService, documentProducer);
+        documentService = new UnProcessedDocumentServiceImpl(documentRepository, storageService, documentProducer);
     }
 
     @Test
@@ -51,7 +51,7 @@ class DocumentServiceImplTest {
     }
 
     @Test
-    void test_process_with_pending_documents_should_send_to_document_process_queue() throws IOException {
+    void test_process_with_pending_documents_should_send_to_document_process_queue() {
         DocumentEntity documentEntity1 = new DocumentEntity();
         documentEntity1.setFileName("test1");
         documentEntity1.setKey("test1");
@@ -66,10 +66,12 @@ class DocumentServiceImplTest {
         userEntity.setUsername("Test123");
 
         when(documentRepository.findByProcessedFalse()).thenReturn(List.of(documentEntity1, documentEntity2));
+        when(documentRepository.save(any())).thenReturn(documentEntity1);
         doNothing().when(documentProducer).process(any());
 
         documentService.process(userEntity);
 
+        verify(documentRepository, times(2)).save(any());
         verify(documentProducer, times(2)).process(any());
     }
 

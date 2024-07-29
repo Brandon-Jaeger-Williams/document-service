@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-public interface DocumentService {
+public interface UnProcessedDocumentService {
 
     String upload(MultipartFile file) throws IOException;
 
