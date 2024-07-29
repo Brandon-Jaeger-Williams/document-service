@@ -42,8 +42,8 @@ class UnProcessedDocumentServiceImplTest {
                 "Hello, World!".getBytes()
         );
 
-        when(storageService.uploadDocument(any())).thenReturn("testKey");
-        when(documentRepository.save(any())).thenReturn(any());
+        when(storageService.uploadDocument(any(), any(String.class))).thenReturn("testKey");
+        when(documentRepository.save(any())).thenReturn(new DocumentEntity());
 
         String key = documentService.upload(file);
 

@@ -48,7 +48,7 @@ class ProcessedDocumentServiceImplyTest {
         documentEntity.setFileType("pdf");
         documentEntity.setKey("test123");
 
-        when(storageService.uploadDocument(any())).thenReturn("test123");
+        when(storageService.uploadDocument(any(), eq("processed"))).thenReturn("test123");
         when(repository.save(any())).thenReturn(documentEntity);
 
         DocumentModel documentModel = processedDocumentService.storeDocument(processedDocument);

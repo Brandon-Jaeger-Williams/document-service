@@ -28,7 +28,7 @@ public class UnProcessedDocumentServiceImpl implements UnProcessedDocumentServic
     @Timer
     @Override
     public String upload(MultipartFile file) throws IOException {
-        String key = storageService.uploadDocument(file.getBytes());
+        String key = storageService.uploadDocument(file.getBytes(), "unprocessed");
         DocumentEntity documentEntity = DocumentMapper.mapFrom(key, file);
         documentRepository.save(documentEntity);
         return key;
