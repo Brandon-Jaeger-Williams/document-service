@@ -41,7 +41,7 @@ public class DocumentController {
     }
 
     @GetMapping("/{id}/download")
-    public ResponseEntity<Resource> getDocument(@PathVariable Long id) throws IOException {
+    public ResponseEntity<Resource> download(@PathVariable Long id) throws IOException {
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(processedDocumentService.download(id));
