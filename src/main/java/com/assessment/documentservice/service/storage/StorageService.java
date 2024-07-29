@@ -1,12 +1,11 @@
 package com.assessment.documentservice.service.storage;
 
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
+import software.amazon.awssdk.core.ResponseInputStream;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 
 public interface StorageService {
 
-    String uploadDocument(MultipartFile file) throws IOException;
+    String uploadDocument(byte[] bytes);
 
-    byte[] getDocument(String key) throws IOException;
+    ResponseInputStream<GetObjectResponse> getDocument(String key);
 }

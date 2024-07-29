@@ -5,15 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
-import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 class StorageServiceImplTest {
 
@@ -35,10 +31,7 @@ class StorageServiceImplTest {
                 "Hello, World!".getBytes()
         );
 
-        when(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class))).thenReturn(any());
-
-        String key = storageService.uploadDocument(file);
-
+        String key = storageService.uploadDocument(file.getBytes());
         assertNotNull(key);
     }
 }
