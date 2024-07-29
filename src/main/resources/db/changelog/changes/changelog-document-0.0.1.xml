@@ -70,4 +70,30 @@
             <dropTable tableName="audits"/>
         </rollback>
     </changeSet>
+
+    <changeSet author="BW" id="document-0.0.3" runOnChange="true">
+        <createTable tableName="processed_documents">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="created_at" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_type" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="key" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="processed_documents"/>
+        </rollback>
+    </changeSet>
 </databaseChangeLog>

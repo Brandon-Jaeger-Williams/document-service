@@ -1,7 +1,10 @@
 package com.assessment.documentservice.mapper;
 
 import com.assessment.documentservice.entity.DocumentEntity;
+import com.assessment.documentservice.entity.ProcessedDocumentEntity;
+import com.assessment.documentservice.model.DocumentModel;
 import com.assessment.documentservice.model.DocumentProcessEvent;
+import com.assessment.documentservice.model.ProcessedDocument;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,5 +31,24 @@ public class DocumentMapper {
         processEvent.setDocumentType(document.getFileType());
         processEvent.setDocumentKey(document.getKey());
         return processEvent;
+    }
+
+    public static DocumentModel mapFrom(ProcessedDocumentEntity documentEntity) {
+        DocumentModel documentModel = new DocumentModel();
+        documentModel.setId(documentEntity.getId());
+        documentModel.setCreatedAt(documentEntity.getCreatedAt());
+        documentModel.setUpdatedAt(documentEntity.getUpdatedAt());
+        documentModel.setFileName(documentEntity.getFileName());
+        documentModel.setFileType(documentEntity.getFileType());
+        documentModel.setKey(documentEntity.getKey());
+        return documentModel;
+    }
+
+    public static ProcessedDocumentEntity mapFrom(ProcessedDocument processedDocument, String key) {
+        ProcessedDocumentEntity documentEntity = new ProcessedDocumentEntity();
+        documentEntity.setFileName(processedDocument.getFileName());
+        documentEntity.setFileType(processedDocument.getFileType());
+        documentEntity.setKey(key);
+        return documentEntity;
     }
 }
