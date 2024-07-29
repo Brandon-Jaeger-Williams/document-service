@@ -7,15 +7,17 @@ import com.assessment.documentservice.producer.DocumentProducer;
 import com.assessment.documentservice.repository.DocumentRepository;
 import com.assessment.documentservice.service.storage.StorageService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-public class DocumentServiceImpl implements DocumentService {
+public class UnProcessedDocumentServiceImpl implements UnProcessedDocumentService {
 
     private final DocumentRepository documentRepository;
 
@@ -26,7 +28,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Timer
     @Override
     public String upload(MultipartFile file) throws IOException {
-        String key = storageService.uploadDocument(file);
+        String key = storageService.uploadDocument(file.getBytes());
         DocumentEntity documentEntity = DocumentMapper.mapFrom(key, file);
         documentRepository.save(documentEntity);
         return key;
@@ -35,7 +37,13 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public void process(UserDetails userDetails) {
         documentRepository.findByProcessedFalse().forEach(document -> {
-            documentProducer.process(DocumentMapper.mapFrom(userDetails, document));
+            try {
+                documentProducer.process(DocumentMapper.mapFrom(userDetails, document));
+                document.setProcessed(true);
+                documentRepository.save(document);
+            } catch (Exception e) {
+                log.error(String.format("An error occurred trying to process unprocessed files: %s", document.getFileName()), e);
+            }
         });
     }
 }
